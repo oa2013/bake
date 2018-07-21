@@ -19,6 +19,7 @@
         android:layout_below="@+id/tvTitle"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="19dp"
-        android:text="Item Body" />
+        android:text="Item Body"
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 </RelativeLayout>

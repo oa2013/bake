@@ -6,11 +6,11 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ItemsListActivity" >
+    tools:context=".ui.ItemsListActivity" >
 
     <fragment
         android:id="@+id/fragment1"
-        android:name="com.agafonova.bake.ItemsListFragment"
+        android:name="com.agafonova.bake.ui.ItemsListFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

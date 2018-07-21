@@ -1,4 +1,4 @@
-package com.agafonova.bake;
+package com.agafonova.bake.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -7,9 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.widget.FrameLayout;
 
+import com.agafonova.bake.R;
+import com.agafonova.bake.db.Recipe;
+
 /*
 * Author: Olga Agafonova
-* Updated: July 14, 2018
+* Updated: July 21, 2018
 * Title: Baking app (Android Nanodegree Project 3)
 *
 * Description: this app shows baking recipes with steps to complete them (images and videos included)
@@ -53,15 +56,15 @@ public class ItemsListActivity extends AppCompatActivity implements ItemsListFra
 	}
 
 	@Override
-	public void onItemSelected(Item item) {
+	public void onItemSelected(Recipe recipe) {
 		if (mTwoPane) {
-			ItemDetailFragment fragmentItem = ItemDetailFragment.newInstance(item);
+			ItemDetailFragment fragmentItem = ItemDetailFragment.newInstance(recipe);
 			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 			ft.replace(R.id.detailContainer, fragmentItem);
 			ft.commit();
 		} else {
 			Intent i = new Intent(this, ItemDetailActivity.class);
-			i.putExtra("item", item);
+			i.putExtra("recipe", recipe);
 			startActivity(i);
 		}
 	}
