@@ -1,18 +1,28 @@
 package com.agafonova.bake.db;
+
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.io.Serializable;
+import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
-
 
 public class Recipe implements Parcelable{
 
+    @SerializedName("id")
     private String mId;
+
+    @SerializedName("name")
     private String mName;
+
+    @SerializedName("ingredients")
     private ArrayList<Ingredient> mIngredients = null;
+
+    @SerializedName("steps")
     private ArrayList<Step> mSteps = null;
+
+    @SerializedName("servings")
     private String mServings;
+
+    @SerializedName("image")
     private String mImage;
 
     public String getmId() {

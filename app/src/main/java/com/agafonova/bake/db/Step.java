@@ -2,16 +2,27 @@ package com.agafonova.bake.db;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by Olga Agafonova on 7/21/18.
  */
 
 public class Step implements Parcelable {
 
+    @SerializedName("id")
     private String mId;
+
+    @SerializedName("shortDescription")
     private String mShortDescription;
+
+    @SerializedName("description")
     private String mDescription;
+
+    @SerializedName("videoURL")
     private String mVideoUrl;
+
+    @SerializedName("thumbnailURL")
     private String mThumbnailUrl;
 
     public Step() {

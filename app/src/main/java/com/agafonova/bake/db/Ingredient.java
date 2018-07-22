@@ -1,6 +1,7 @@
 package com.agafonova.bake.db;
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Olga Agafonova on 7/21/18.
@@ -8,8 +9,13 @@ import android.os.Parcelable;
 
 public class Ingredient implements Parcelable {
 
+    @SerializedName("quantity")
     private String mQuantity;
+
+    @SerializedName("measure")
     private String mMeasure;
+
+    @SerializedName("ingredient")
     private String mIngredient;
 
     public Ingredient() {
