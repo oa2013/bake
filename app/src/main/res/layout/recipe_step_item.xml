@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ivRecipeStep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/cupcake" />
+
+    <TextView
+        android:id="@+id/tvRecipeStep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/recipe_item_padding"
+        android:layout_marginEnd="@dimen/recipe_item_padding"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/placeholder"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="@dimen/ingredient_and_step_font_size"
+        android:layout_below="@+id/ivRecipeStep"/>
+
+</RelativeLayout>

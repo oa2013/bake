@@ -5,6 +5,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:backgroundTint="@color/colorPrimaryDark"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/cardview_margin"
@@ -13,23 +14,123 @@
 
 <android.support.constraint.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:padding="@dimen/recipe_item_padding">
 
-    <TextView
-        android:id="@+id/tvRecipe"
+    <ImageView
+        android:id="@+id/ivRecipeImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/recipe_item_padding"
-        android:layout_marginTop="@dimen/recipe_item_padding"
-        android:layout_marginEnd="@dimen/recipe_item_padding"
-        android:layout_marginBottom="@dimen/recipe_item_padding"
-        android:text="@string/placeholder"
-        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/ic_bettercupcake"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.018" />
+
+    <TextView
+        android:id="@+id/tvRecipeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/placeholder"
+        android:textColor="@color/white"
+        android:textSize="@dimen/recipe_name_font_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.038"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivRecipeImage"
+        app:layout_constraintVertical_bias="0.018" />
+
+    <TextView
+        android:id="@+id/tvRecipeServingNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/placeholder"
+        android:textColor="@color/white"
+        android:textSize="@dimen/recipe_font_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvRecipeName" />
+
+    <TextView
+        android:id="@+id/tvRecipeIngredientNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/placeholder"
+        android:textColor="@color/white"
+        android:textSize="@dimen/recipe_font_size"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvRecipeIngredientLabel"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvRecipeIngredientLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/ingredients"
+        android:textColor="@color/white"
+        android:textSize="@dimen/recipe_font_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.029"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvRecipeServingNumber" />
+
+    <TextView
+        android:id="@+id/tvRecipeStepNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="@string/placeholder"
+        android:textColor="@color/white"
+        android:textSize="@dimen/recipe_font_size"
+        app:layout_constraintBaseline_toBaselineOf="@+id/tvRecipeStepLabel"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvRecipeStepLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:text="@string/steps"
+        android:textColor="@color/white"
+        android:textSize="@dimen/recipe_font_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.025"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvRecipeIngredientLabel" />
+
+    <TextView
+        android:id="@+id/tvServings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/servings"
+        android:textColor="@color/white"
+        android:textSize="@dimen/recipe_font_size"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.027"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvRecipeName" />
 
 </android.support.constraint.ConstraintLayout>
 

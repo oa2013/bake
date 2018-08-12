@@ -8,21 +8,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <!-- The thing on the left is the recipe detail frag with two recyclerviews -->
     <fragment
-        android:id="@+id/fragmentItemsList"
-        android:name="com.agafonova.bake.ui.ItemsListFragment"
-        android:layout_height="wrap_content"
+        android:id="@+id/fragment_recipe_detail"
+        android:name="com.agafonova.bake.ui.RecipeDetailFragment"
+        android:layout_height="match_parent"
         android:layout_width="0dp"
-        android:layout_weight="1"
-        tools:layout="@layout/fragment_items_list" />
+        android:layout_weight="1" />
     
     <View android:background="#000000"
         android:layout_width="1dp" 
         android:layout_height="wrap_content"
         />
-    
+
+    <!-- The thing on the right is the recipe step frag with the exoplayer -->
+    <!--Same id as in layout/activity_recipe_step_detail -->
     <FrameLayout
-        android:id="@+id/detailContainer"
+        android:id="@+id/recipeStepDetailContainer"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="3" />

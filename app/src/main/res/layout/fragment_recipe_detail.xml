@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvIngredientLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/ingredients"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorPrimaryDark"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvFragmentIngredients"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:padding="@dimen/cardview_margin"
+        android:layout_below="@id/tvIngredientLabel"/>
+
+    <TextView
+        android:id="@+id/tvStepLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/steps"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/recipe_item_padding"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_below="@id/rvFragmentIngredients"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvFragmentSteps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvStepLabel"
+        android:layout_centerHorizontal="true"
+        android:padding="@dimen/cardview_margin"/>
+
+</RelativeLayout>
+
+</ScrollView>

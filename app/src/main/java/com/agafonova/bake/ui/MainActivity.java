@@ -1,12 +1,14 @@
 package com.agafonova.bake.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import com.agafonova.bake.R;
 import com.agafonova.bake.adapters.RecipeAdapter;
 import com.agafonova.bake.db.Recipe;
@@ -24,14 +26,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements RecipeAdapter.ResourceClickListener, Callback<List<Recipe>> {
 
+    private static final String BASE_URL = "https://d17h27t6h515a5.cloudfront.net/";
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-    static final String BASE_URL = "https://d17h27t6h515a5.cloudfront.net/";
-
-    private boolean mIsTablet = false;
     private RecipeAdapter mAdapter;
+    private List<Recipe> recipeList;
 
     @BindView(R.id.rv_recipes)
     RecyclerView mRecyclerView;
+
+    @BindView(R.id.tvNetworkError)
+    TextView mNetworkError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Res
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        mNetworkError.setVisibility(View.INVISIBLE);
         ActionBar actionBar = getSupportActionBar();
 
         if (actionBar != null) {
@@ -50,21 +55,10 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Res
 
         try {
 
-            determineDevice();
-
-            if(mIsTablet) {
-                GridLayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 3, GridLayoutManager.VERTICAL, false);
-                mRecyclerView.setLayoutManager(layoutManager);
-                mRecyclerView.setHasFixedSize(true);
-
-            }
-            else  {
-                GridLayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 1, GridLayoutManager.VERTICAL, false);
-                mRecyclerView.setLayoutManager(layoutManager);
-                mRecyclerView.setHasFixedSize(true);
-            }
-
-            mAdapter = new RecipeAdapter(this);
+            GridLayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 3, GridLayoutManager.VERTICAL, false);
+            mRecyclerView.setLayoutManager(layoutManager);
+            mRecyclerView.setHasFixedSize(true);
+            mAdapter = new RecipeAdapter(this,this);
             mRecyclerView.setAdapter(mAdapter);
 
             startRetrofitService();
@@ -92,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Res
 
         if(response.isSuccessful()) {
 
-            List<Recipe> recipeList = response.body();
+            recipeList = response.body();
 
             if(recipeList != null) {
                 mAdapter.setData(recipeList);
@@ -101,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Res
 
         } else {
             Log.d(LOG_TAG,response.errorBody().toString());
+            mNetworkError.setVisibility(View.VISIBLE);
         }
     }
 
@@ -109,35 +104,11 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Res
         error.printStackTrace();
     }
 
-    /*
-    * See https://stackoverflow.com/questions/15055458/detect-7-inch-and-10-inch-tablet-programmatically
-    * */
-    public void determineDevice() {
-
-        DisplayMetrics metrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(metrics);
-
-        int widthPixels = metrics.widthPixels;
-        int heightPixels = metrics.heightPixels;
-        float scaleFactor = metrics.density;
-
-        float widthDp = widthPixels / scaleFactor;
-        float heightDp = heightPixels / scaleFactor;
-        float smallestWidth = Math.min(widthDp, heightDp);
-
-        if (smallestWidth > 720) {
-            mIsTablet = true;
-        }
-        else if (smallestWidth > 600) {
-            mIsTablet = true;
-        }
-        else  {
-            mIsTablet = false;
-        }
-    }
 
     @Override
-    public void onRecipeClick(String data) {
-
+    public void onRecipeClick(Recipe selectedRecipe) {
+        Intent intent = new Intent(this, RecipeDetailActivity.class);
+        intent.putExtra("recipeDetails", selectedRecipe);
+        startActivity(intent);
     }
 }

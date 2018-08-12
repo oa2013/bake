@@ -5,9 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.agafonova.bake.R;
 import com.agafonova.bake.db.Recipe;
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 /**
@@ -18,14 +21,16 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
 
     private static final String NO_RECIPES = "No recipes available.";
     private List<Recipe> mRecipeList;
-    final private RecipeAdapter.ResourceClickListener mOnClickListener;
+    private RecipeAdapter.ResourceClickListener mOnClickListener;
+    private Context mContext;
 
-    public RecipeAdapter(RecipeAdapter.ResourceClickListener listener) {
+    public RecipeAdapter(Context iContext, RecipeAdapter.ResourceClickListener listener) {
         mOnClickListener = listener;
+        mContext = iContext;
     }
 
     public interface ResourceClickListener {
-        void onRecipeClick(String data);
+        void onRecipeClick(Recipe selectedRecipe);
     }
 
     @Override
@@ -40,14 +45,25 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
     @Override
     public void onBindViewHolder(RecipeAdapter.RecipeAdapterViewHolder holder, int position) {
 
-        Recipe oneRecipe = mRecipeList.get(position);
+        Recipe someRecipe = mRecipeList.get(position);
 
         try {
             if(mRecipeList.size()>0) {
-                holder.textViewRecipe.setText(oneRecipe.getmName());
+                holder.textViewRecipeName.setText(someRecipe.getmName());
+
+                if(!someRecipe.getmImage().equals("")) {
+                    Picasso.with(holder.itemView.getContext()).load(someRecipe.getmImage()).placeholder(R.drawable.cupcake)
+                            .error(R.drawable.cupcake).into(holder.imageViewRecipeImage);
+
+                }
+
+                holder.textViewIngredientNumber.setText(Integer.toString(someRecipe.getmIngredients().size()));
+                holder.textViewStepNumber.setText(Integer.toString(someRecipe.getmSteps().size()));
+                holder.textViewServingNumber.setText(someRecipe.getmServings());
+
             }
             else {
-                holder.textViewRecipe.setText(NO_RECIPES);
+                holder.textViewRecipeName.setText(NO_RECIPES);
             }
         }
         catch (Exception e) {
@@ -70,19 +86,28 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeAdap
 
     public class RecipeAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView textViewRecipe;
+        private ImageView imageViewRecipeImage;
+        private TextView textViewRecipeName;
+        private TextView textViewIngredientNumber;
+        private TextView textViewServingNumber;
+        private TextView textViewStepNumber;
+
 
         public RecipeAdapterViewHolder(View itemView) {
             super(itemView);
-            textViewRecipe = itemView.findViewById(R.id.tvRecipe);
-            textViewRecipe.setOnClickListener(this);
+            imageViewRecipeImage = itemView.findViewById(R.id.ivRecipeImage);
+            textViewRecipeName = itemView.findViewById(R.id.tvRecipeName);
+            textViewIngredientNumber = itemView.findViewById(R.id.tvRecipeIngredientNumber);
+            textViewServingNumber = itemView.findViewById(R.id.tvRecipeServingNumber);
+            textViewStepNumber = itemView.findViewById(R.id.tvRecipeStepNumber);
+            itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             int clickedPosition = getAdapterPosition();
-            String recipeID = mRecipeList.get(clickedPosition).getmId();
-            mOnClickListener.onRecipeClick(recipeID);
+            Recipe selectedRecipe = mRecipeList.get(clickedPosition);
+            mOnClickListener.onRecipeClick(selectedRecipe);
         }
     }
 
