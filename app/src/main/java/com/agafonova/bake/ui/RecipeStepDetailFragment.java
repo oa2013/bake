@@ -20,6 +20,8 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+
+import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,11 +42,11 @@ public class RecipeStepDetailFragment extends Fragment  {
     @BindView(R.id.exoPlayerView)
     PlayerView mVideoPlayer;
 
-    @BindView(R.id.tvStepDescription)
-    TextView mStepDescription;
+//    @BindView(R.id.tvStepDescription)
+//    TextView mStepDescription;
 
     private int mStepListIndex;
-    private List<Step> mStepList;
+    private ArrayList<Step> mStepList;
 
     private ExoPlayer mExoPlayer;
     boolean mPlayerStatus = true;
@@ -64,6 +66,11 @@ public class RecipeStepDetailFragment extends Fragment  {
 		View view = inflater.inflate(R.layout.fragment_recipe_step_detail, container,
 				false);
         ButterKnife.bind(this,view);
+
+        if(savedInstanceState != null) {
+            mStepList = savedInstanceState.getParcelableArrayList("mStepList");
+            mStepListIndex = savedInstanceState.getInt("mStepListIndex");
+        }
 
         if(mStepList != null && mStepList.get(mStepListIndex) != null) {
 
@@ -105,7 +112,7 @@ public class RecipeStepDetailFragment extends Fragment  {
         mVideoPlayer.setPlayer(mExoPlayer);
     }
 
-    public void setData(List<Step> stepList, int position) {
+    public void setData(ArrayList<Step> stepList, int position) {
 		mStepList = stepList;
 		mStepListIndex = position;
 	}
@@ -127,10 +134,9 @@ public class RecipeStepDetailFragment extends Fragment  {
 
 	private void updateFragmentData() {
 
-        mStepDescription.setText(mStepList.get(mStepListIndex).getmDescription());
+        //mStepDescription.setText(mStepList.get(mStepListIndex).getmDescription());
 
         if(!mStepList.get(mStepListIndex).getmVideoUrl().equals("")) {
-
             Uri uri = Uri.parse(mStepList.get(mStepListIndex).getmVideoUrl());
             MediaSource mediaSource = buildMediaSource(uri);
             mExoPlayer.prepare(mediaSource);
@@ -151,7 +157,6 @@ public class RecipeStepDetailFragment extends Fragment  {
         mPlayerStatus = true;
     }
 
-
     public void releasePlayer() {
         if(mExoPlayer != null) {
             mExoPlayer.stop();
@@ -171,6 +176,8 @@ public class RecipeStepDetailFragment extends Fragment  {
         super.onSaveInstanceState(outState);
         outState.putLong(PLAYER_POSITION, mExoPlayer.getCurrentPosition());
         outState.putBoolean(PLAYER_STATUS, mExoPlayer.getPlayWhenReady());
+        outState.putParcelableArrayList("mStepList", mStepList);
+        outState.putInt("mStepListIndex", mStepListIndex);
     }
 
     @Override
@@ -179,6 +186,8 @@ public class RecipeStepDetailFragment extends Fragment  {
         if(savedInstanceState != null) {
             mPlayerPosition = savedInstanceState.getLong(PLAYER_POSITION);
             mPlayerStatus = savedInstanceState.getBoolean(PLAYER_STATUS);
+            mStepList = savedInstanceState.getParcelableArrayList("mStepList");
+            mStepListIndex = savedInstanceState.getInt("mStepListIndex");
             updateFragmentData();
         }
     }

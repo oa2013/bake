@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 
 import com.agafonova.bake.R;
 import com.agafonova.bake.db.Recipe;
@@ -20,6 +21,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
     private static final String LOG_TAG = RecipeDetailActivity.class.getSimpleName();
 	private boolean mIsTablet = false;
     private RecipeStepDetailFragment mRecipeStepFragment;
+    private ArrayList<Step> mStepList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +46,13 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
             if (mIsTablet) {
 
-                List<Step> stepList = recipe.getmSteps();
+                mStepList = recipe.getmSteps();
 
                 if (savedInstanceState == null) {
 
                     mRecipeStepFragment = new RecipeStepDetailFragment();
-                    mRecipeStepFragment.setData(stepList, 0);
+                    mRecipeStepFragment.setData(mStepList, 0);
+
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     fragmentManager.beginTransaction()
                             .add(R.id.recipeStepDetailContainer, mRecipeStepFragment)
@@ -105,5 +108,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         else  {
             mIsTablet = false;
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 }
