@@ -42,8 +42,8 @@ public class RecipeStepDetailFragment extends Fragment  {
     @BindView(R.id.exoPlayerView)
     PlayerView mVideoPlayer;
 
-//    @BindView(R.id.tvStepDescription)
-//    TextView mStepDescription;
+    @BindView(R.id.tvStepDescription)
+    TextView mStepDescription;
 
     private int mStepListIndex;
     private ArrayList<Step> mStepList;
@@ -134,7 +134,7 @@ public class RecipeStepDetailFragment extends Fragment  {
 
 	private void updateFragmentData() {
 
-        //mStepDescription.setText(mStepList.get(mStepListIndex).getmDescription());
+        mStepDescription.setText(mStepList.get(mStepListIndex).getmDescription());
 
         if(!mStepList.get(mStepListIndex).getmVideoUrl().equals("")) {
             Uri uri = Uri.parse(mStepList.get(mStepListIndex).getmVideoUrl());

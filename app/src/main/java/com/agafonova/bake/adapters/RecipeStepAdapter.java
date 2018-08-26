@@ -106,7 +106,7 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Re
             super(itemView);
             textViewRecipeStep = itemView.findViewById(R.id.tvRecipeStep);
             imageViewRecipeStep = itemView.findViewById(R.id.ivRecipeStep);
-            textViewRecipeStep.setOnClickListener(this);
+            itemView.setOnClickListener(this);
         }
 
         @Override

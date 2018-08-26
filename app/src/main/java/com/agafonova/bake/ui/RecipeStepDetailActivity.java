@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+
 import com.agafonova.bake.R;
 import com.agafonova.bake.db.Step;
+
 import java.util.ArrayList;
 
 /*
@@ -46,11 +49,9 @@ public class RecipeStepDetailActivity extends AppCompatActivity  {
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .add(R.id.recipeStepDetailContainer, mRecipeStepFragment)
+                        .addToBackStack(null)
                         .commit();
             }
-
         }
-
 	}
-
 }

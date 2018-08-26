@@ -19,61 +19,65 @@ import java.util.List;
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailFragment.OnRecipeStepClickListener {
 
     private static final String LOG_TAG = RecipeDetailActivity.class.getSimpleName();
-	private boolean mIsTablet = false;
+    private boolean mIsTablet = false;
     private RecipeStepDetailFragment mRecipeStepFragment;
     private ArrayList<Step> mStepList;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
 
         Intent intent = getIntent();
 
-        try {
-
-        if (intent.hasExtra("recipeDetails")) {
-            Recipe recipe = intent.getParcelableExtra("recipeDetails");
-
-            RecipeDetailFragment detailFragment = (RecipeDetailFragment) getSupportFragmentManager().
-                    findFragmentById(R.id.fragment_recipe_detail);
-
-            detailFragment.setAdapterData(recipe);
-
-            setTitle(recipe.getmName());
-
-            determineDevice();
-
-            if (mIsTablet) {
-
-                mStepList = recipe.getmSteps();
-
-                if (savedInstanceState == null) {
-
-                    mRecipeStepFragment = new RecipeStepDetailFragment();
-                    mRecipeStepFragment.setData(mStepList, 0);
-
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .add(R.id.recipeStepDetailContainer, mRecipeStepFragment)
-                            .commit();
-                }
-
-            } else {
-                mIsTablet = false;
-            }
-        }
-        }
-        catch(Exception e) {
-            Log.d(LOG_TAG, e.toString());
-        }
+        loadEverything(savedInstanceState, intent);
 
     }
 
-	@Override
-	public void onRecipeStepClick(ArrayList<Step> recipeStepList, int position) {
+    private void loadEverything(Bundle savedInstanceState, Intent intent) {
+        try {
 
-	    if(mIsTablet) {
+            if (intent.hasExtra("recipeDetails")) {
+                Recipe recipe = intent.getParcelableExtra("recipeDetails");
+
+                RecipeDetailFragment detailFragment = (RecipeDetailFragment) getSupportFragmentManager().
+                        findFragmentById(R.id.fragment_recipe_detail);
+
+                detailFragment.setAdapterData(recipe);
+
+                setTitle(recipe.getmName());
+
+                determineDevice();
+
+                if (mIsTablet) {
+
+                    mStepList = recipe.getmSteps();
+
+                    if (savedInstanceState == null) {
+
+                        mRecipeStepFragment = new RecipeStepDetailFragment();
+                        mRecipeStepFragment.setData(mStepList, 0);
+
+                        FragmentManager fragmentManager = getSupportFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .add(R.id.recipeStepDetailContainer, mRecipeStepFragment)
+                                .addToBackStack(null)
+                                .commit();
+                    }
+
+                } else {
+                    mIsTablet = false;
+                }
+            }
+        } catch (Exception e) {
+            Log.d(LOG_TAG, e.toString());
+        }
+    }
+
+    @Override
+    public void onRecipeStepClick(ArrayList<Step> recipeStepList, int position) {
+
+        if (mIsTablet) {
             mRecipeStepFragment.updatePosition(position);
         } else {
             Intent intent = new Intent(this, RecipeStepDetailActivity.class);
@@ -81,7 +85,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             intent.putExtra("recipeStepPosition", position);
             startActivity(intent);
         }
-	}
+    }
 
     /*
     * See https://stackoverflow.com/questions/15055458/detect-7-inch-and-10-inch-tablet-programmatically
@@ -101,11 +105,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
         if (smallestWidth > 720) {
             mIsTablet = true;
-        }
-        else if (smallestWidth > 600) {
+        } else if (smallestWidth > 600) {
             mIsTablet = true;
-        }
-        else  {
+        } else {
             mIsTablet = false;
         }
     }
@@ -118,5 +120,15 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    /*
+    * We will hit this method when we come
+    * back from our video fragment in phone (not tablet) view
+    */
+    @Override
+    public void onResume() {
+        super.onResume();
+        Intent intent = getIntent();
     }
 }
