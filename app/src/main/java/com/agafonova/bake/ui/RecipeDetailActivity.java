@@ -1,6 +1,10 @@
 package com.agafonova.bake.ui;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -8,17 +12,24 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 
+import com.agafonova.bake.BakeAppWidgetProvider;
 import com.agafonova.bake.R;
+import com.agafonova.bake.db.Ingredient;
 import com.agafonova.bake.db.Recipe;
 import com.agafonova.bake.db.Step;
 import com.google.android.exoplayer2.ExoPlayer;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailFragment.OnRecipeStepClickListener {
 
     private static final String LOG_TAG = RecipeDetailActivity.class.getSimpleName();
+    private static final String INGREDIENTS = "";
+
     private boolean mIsTablet = false;
     private RecipeStepDetailFragment mRecipeStepFragment;
     private ArrayList<Step> mStepList;
@@ -40,6 +51,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
             if (intent.hasExtra("recipeDetails")) {
                 Recipe recipe = intent.getParcelableExtra("recipeDetails");
 
+                //We will retrieve the ingredient list in WidgetService
+                putIngredientsIntoSharedPrefs(recipe);
+
                 RecipeDetailFragment detailFragment = (RecipeDetailFragment) getSupportFragmentManager().
                         findFragmentById(R.id.fragment_recipe_detail);
 
@@ -48,6 +62,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
                 setTitle(recipe.getmName());
 
                 determineDevice();
+
+                sentDataToBakeWidget(recipe);
 
                 if (mIsTablet) {
 
@@ -72,6 +88,19 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         } catch (Exception e) {
             Log.d(LOG_TAG, e.toString());
         }
+    }
+
+    private void putIngredientsIntoSharedPrefs(Recipe recipe) {
+        SharedPreferences sharedPref = getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+        Set<String> ingredientSet = new HashSet<String>();
+        for(Ingredient ingredient : recipe.getmIngredients()) {
+            ingredientSet.add(ingredient.getmIngredient());
+        }
+
+        editor.putStringSet(INGREDIENTS, ingredientSet);
+        editor.commit();
     }
 
     @Override
@@ -130,5 +159,11 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
     public void onResume() {
         super.onResume();
         Intent intent = getIntent();
+    }
+
+    public void sentDataToBakeWidget(Recipe recipe) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+        int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(this, BakeAppWidgetProvider.class));
+        BakeAppWidgetProvider.updateAppWidget(this, appWidgetManager, ids, recipe);
     }
 }
