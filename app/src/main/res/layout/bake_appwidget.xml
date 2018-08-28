@@ -10,22 +10,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:padding="@dimen/recipe_item_padding"
         android:src="@drawable/ic_bettercupcake"
         />
 
-    <TextView
-        android:id="@+id/tv_widget_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"/>
-
     <ListView
-        android:id="@+id/lv_appwidget_recipeList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/cardview_margin"
-        android:dividerHeight="1dp"
-        android:divider="#eeeeee"
-        tools:listitem="@layout/list_item_widget"/>
+        android:id="@+id/lv_widget_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/list_item_widget" />
 
 </LinearLayout>

@@ -10,25 +10,20 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
 
 import com.agafonova.bake.BakeAppWidgetProvider;
 import com.agafonova.bake.R;
-import com.agafonova.bake.db.Ingredient;
 import com.agafonova.bake.db.Recipe;
 import com.agafonova.bake.db.Step;
-import com.google.android.exoplayer2.ExoPlayer;
+import com.google.gson.Gson;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class RecipeDetailActivity extends AppCompatActivity implements RecipeDetailFragment.OnRecipeStepClickListener {
 
     private static final String LOG_TAG = RecipeDetailActivity.class.getSimpleName();
-    private static final String INGREDIENTS = "";
+    private static final String PREF_NAME="BakingApp";
+    private static final String RECIPE = "";
 
     private boolean mIsTablet = false;
     private RecipeStepDetailFragment mRecipeStepFragment;
@@ -52,7 +47,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
                 Recipe recipe = intent.getParcelableExtra("recipeDetails");
 
                 //We will retrieve the ingredient list in WidgetService
-                putIngredientsIntoSharedPrefs(recipe);
+                putRecipeIntoSharedPrefs(recipe);
 
                 RecipeDetailFragment detailFragment = (RecipeDetailFragment) getSupportFragmentManager().
                         findFragmentById(R.id.fragment_recipe_detail);
@@ -90,16 +85,12 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
         }
     }
 
-    private void putIngredientsIntoSharedPrefs(Recipe recipe) {
-        SharedPreferences sharedPref = getSharedPreferences("SharedPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-
-        Set<String> ingredientSet = new HashSet<String>();
-        for(Ingredient ingredient : recipe.getmIngredients()) {
-            ingredientSet.add(ingredient.getmIngredient());
-        }
-
-        editor.putStringSet(INGREDIENTS, ingredientSet);
+    private void putRecipeIntoSharedPrefs(Recipe recipe) {
+        Gson gson = new Gson();
+        String recipeString = gson.toJson(recipe);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(RECIPE, recipeString);
         editor.commit();
     }
 
@@ -162,8 +153,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
     }
 
     public void sentDataToBakeWidget(Recipe recipe) {
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-        int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(this, BakeAppWidgetProvider.class));
-        BakeAppWidgetProvider.updateAppWidget(this, appWidgetManager, ids, recipe);
+       AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
+       int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(this, BakeAppWidgetProvider.class));
+       BakeAppWidgetProvider.updateAppWidget(this, appWidgetManager, ids[0]);
     }
 }

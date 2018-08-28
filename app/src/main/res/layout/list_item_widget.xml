@@ -7,11 +7,27 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tv_list_item_ingredient"
-        android:text="@string/placeholder"
-        android:textColor="@color/white"
-        android:textSize="@dimen/recipe_font_size"
+        android:id="@+id/tv_widget_ingredient_item"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:padding="@dimen/recipe_item_padding"
+        android:text="@string/placeholder"/>
+
+    <TextView
+        android:id="@+id/tv_widget_ingredient_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:padding="@dimen/recipe_item_padding"
+        android:text="@string/placeholder"/>
+
+    <TextView
+        android:id="@+id/tv_widget_ingredient_measurement"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:padding="@dimen/recipe_item_padding"
+        android:text="@string/placeholder"/>
 
 </LinearLayout>

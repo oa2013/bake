@@ -1,6 +1,8 @@
 package com.agafonova.bake.ui;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +30,8 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Res
 
     private static final String BASE_URL = "https://d17h27t6h515a5.cloudfront.net/";
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+    private static final String PREF_NAME="BakingApp";
+    private static final String RECIPE = "";
     private RecipeAdapter mAdapter;
     private List<Recipe> recipeList;
 
@@ -109,6 +113,20 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Res
     public void onRecipeClick(Recipe selectedRecipe) {
         Intent intent = new Intent(this, RecipeDetailActivity.class);
         intent.putExtra("recipeDetails", selectedRecipe);
+
+        //update widget
+        putRecipeIntoSharedPrefs(selectedRecipe);
+
         startActivity(intent);
     }
+
+    private void putRecipeIntoSharedPrefs(Recipe recipe) {
+        Gson gson = new Gson();
+        String recipeString = gson.toJson(recipe);
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(RECIPE, recipeString);
+        editor.commit();
+    }
+
 }
