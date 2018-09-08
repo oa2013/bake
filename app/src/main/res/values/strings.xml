@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Bake</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_item_detail">ItemDetail</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="network_error">Network error: please check your wireless connection.</string>
     <string name="placeholder">Dummy text</string>
