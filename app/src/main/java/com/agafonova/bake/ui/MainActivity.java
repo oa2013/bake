@@ -20,7 +20,19 @@ import com.agafonova.bake.db.Recipe;
 import com.agafonova.bake.utils.BakeAPI;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Scanner;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
@@ -31,6 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements RecipeAdapter.ResourceClickListener, Callback<List<Recipe>> {
 
+    private static final String JSON_ERROR = "Json file not loaded";
     private static final String BASE_URL = "https://d17h27t6h515a5.cloudfront.net/";
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static final String PREF_NAME="BakingApp";
@@ -68,13 +81,38 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Res
             mAdapter = new RecipeAdapter(this,this);
             mRecyclerView.setAdapter(mAdapter);
 
-            startRetrofitService();
+            loadJsonWithoutRetrofit();
+            //startRetrofitService();
 
         }
         catch(Exception e) {
             Log.d(LOG_TAG, e.toString());
         }
 
+    }
+
+    private void loadJsonWithoutRetrofit() {
+
+        Context context = this;
+        Gson gson = new Gson();
+
+        InputStream inputStream = context.getResources().openRawResource(R.raw.baking);
+
+        if (inputStream != null ) {
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            Type type = new TypeToken<List<Recipe>>(){}.getType();
+            recipeList = gson.fromJson(bufferedReader, type);
+
+            if(recipeList != null) {
+                mAdapter.setData(recipeList);
+                mAdapter.notifyDataSetChanged();
+            }
+            else {
+                Log.d(LOG_TAG,JSON_ERROR);
+                mNetworkError.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     private void startRetrofitService() {
@@ -117,7 +155,6 @@ public class MainActivity extends AppCompatActivity implements RecipeAdapter.Res
         Intent intent = new Intent(this, RecipeDetailActivity.class);
         intent.putExtra("recipeDetails", selectedRecipe);
 
-        //update widget
         putRecipeIntoSharedPrefs(selectedRecipe);
 
         startActivity(intent);

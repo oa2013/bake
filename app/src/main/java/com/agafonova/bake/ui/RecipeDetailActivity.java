@@ -58,7 +58,8 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
 
                 determineDevice();
 
-                sentDataToBakeWidget(recipe);
+                //September 9, 2018 -- something is causing the app to crash here
+                //sentDataToBakeWidget(recipe);
 
                 if (mIsTablet) {
 
