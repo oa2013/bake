@@ -53,7 +53,6 @@ public class BakeRemoteViewFactory implements RemoteViewsService.RemoteViewsFact
             }
         }
 
-        //This isn't getting called :(
         @Override
         public RemoteViews getViewAt(int position) {
 

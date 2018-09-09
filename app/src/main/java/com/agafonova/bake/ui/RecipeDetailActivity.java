@@ -59,7 +59,7 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
                 determineDevice();
 
                 //September 9, 2018 -- something is causing the app to crash here
-                //sentDataToBakeWidget(recipe);
+                sentDataToBakeWidget(recipe);
 
                 if (mIsTablet) {
 
@@ -156,6 +156,9 @@ public class RecipeDetailActivity extends AppCompatActivity implements RecipeDet
     public void sentDataToBakeWidget(Recipe recipe) {
        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
        int[] ids = appWidgetManager.getAppWidgetIds(new ComponentName(this, BakeAppWidgetProvider.class));
-       BakeAppWidgetProvider.updateAppWidget(this, appWidgetManager, ids[0]);
+
+       if(ids.length > 0) {
+           BakeAppWidgetProvider.updateAppWidget(this, appWidgetManager, ids[0]);
+       }
     }
 }
