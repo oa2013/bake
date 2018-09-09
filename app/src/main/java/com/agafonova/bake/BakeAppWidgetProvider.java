@@ -34,11 +34,12 @@ public class BakeAppWidgetProvider extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         Log.d(LOG_TAG, "onUpdate");
-        //super.onUpdate(context, appWidgetManager, appWidgetIds);
 
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
+
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
     public static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
@@ -58,9 +59,6 @@ public class BakeAppWidgetProvider extends AppWidgetProvider {
 
                 Intent serviceIntent = new Intent(context, WidgetService.class);
                 context.startService(serviceIntent);
-                //Note to reviewers:
-                //Inside the BakeRemoteViewFactory
-                //the getViewAt method isn't getting called and I don't understand why
 
                 serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                 views.setRemoteAdapter(R.id.lv_widget_listview, serviceIntent);

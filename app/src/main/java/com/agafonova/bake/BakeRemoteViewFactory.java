@@ -57,7 +57,7 @@ public class BakeRemoteViewFactory implements RemoteViewsService.RemoteViewsFact
         public RemoteViews getViewAt(int position) {
 
             //Pass data back to list view
-            RemoteViews views = new RemoteViews(mContext.getPackageName(),R.layout.bake_appwidget);
+            RemoteViews views = new RemoteViews(mContext.getPackageName(),R.layout.list_item_widget);
 
             views.setTextViewText(R.id.tv_widget_ingredient_item, mIngredientArray.get(position).getmIngredient());
             views.setTextViewText(R.id.tv_widget_ingredient_measurement, mIngredientArray.get(position).getmMeasure());
